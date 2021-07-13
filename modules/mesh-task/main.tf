@@ -145,6 +145,12 @@ resource "aws_ecs_task_definition" "this" {
             cpu         = 0
             volumesFrom = []
             environment = []
+            secrets = var.gossip_key_secret_arn != "" ? [
+              {
+                name      = "CONSUL_GOSSIP_ENCRYPTION_KEY",
+                valueFrom = var.gossip_key_secret_arn
+              }
+            ] : []
           },
           {
             name             = "sidecar-proxy"

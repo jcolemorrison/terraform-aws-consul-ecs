@@ -7,6 +7,7 @@ exec consul agent \
   -advertise "$ECS_IPV4" \
   -data-dir /consul/data \
   -client 0.0.0.0 \
+  -encrypt "$CONSUL_GOSSIP_ENCRYPTION_KEY" \
 %{ if dev_server_enabled ~}
   -retry-join "$SERVER_IP" \
 %{ else ~}

@@ -70,6 +70,12 @@ resource "aws_ecs_task_definition" "this" {
       linuxParameters = {
         initProcessEnabled = true
       }
+      secrets = var.gossip_key_secret_arn != "" ? [
+        {
+          name      = "CONSUL_GOSSIP_ENCRYPTION_KEY",
+          valueFrom = var.gossip_key_secret_arn
+        }
+      ] : []
     }
   ])
 }
@@ -83,6 +89,17 @@ resource "aws_iam_policy" "this_execution" {
 {
   "Version": "2012-10-17",
   "Statement": [
+%{if var.gossip_key_secret_arn != ""~}
+    {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": [
+        "${var.gossip_key_secret_arn}"
+      ]
+    },
+%{endif~}
     {
       "Effect": "Allow",
       "Action": [

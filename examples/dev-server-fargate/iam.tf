@@ -59,6 +59,17 @@ resource "aws_iam_policy" "example_app_execution" {
 {
   "Version": "2012-10-17",
   "Statement": [
+%{if var.gossip_encryption_key != ""~}
+    {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": [
+        "${aws_secretsmanager_secret.gossip_key[0].arn}"
+      ]
+    },
+%{endif~}
     {
       "Effect": "Allow",
       "Action": [

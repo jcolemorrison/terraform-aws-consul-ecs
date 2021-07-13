@@ -89,6 +89,7 @@ module "example_client_app" {
     volumesFrom = []
   }]
   consul_server_service_name = module.dev_consul_server.ecs_service_name
+  gossip_key_secret_arn      = var.gossip_encryption_key != "" ? aws_secretsmanager_secret.gossip_key[0].arn : ""
 }
 
 # The server app is part of the service mesh. It's called
@@ -129,6 +130,7 @@ module "example_server_app" {
     ]
   }]
   consul_server_service_name = module.dev_consul_server.ecs_service_name
+  gossip_key_secret_arn      = var.gossip_encryption_key != "" ? aws_secretsmanager_secret.gossip_key[0].arn : ""
 }
 
 resource "aws_lb" "example_client_app" {

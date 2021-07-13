@@ -87,3 +87,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "gossip_key_secret_arn" {
+  description = "The ARN of the Secret containing the Consul gossip encryption key"
+  type        = string
+  default     = ""
+}
